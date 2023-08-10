@@ -1,0 +1,37 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract ErrorHandlingExample {
+    uint256 public counter;
+
+    constructor() {
+        counter = 0;
+    }
+
+    function incrementCounter(uint256 _value) public {
+        // Use require() to validate conditions before proceeding
+        require(_value > 0, "Value must be greater than 0");
+
+        // Use assert() to check for internal errors (should never fail)
+        assert(counter + _value >= counter);
+
+        counter += _value;
+    }
+
+    function decrementCounter(uint256 _value) public {
+        // Use require() to validate conditions before proceeding
+        require(_value > 0, "Value must be greater than 0");
+        require(_value <= counter, "Insufficient counter value");
+
+        // Use revert() to explicitly revert transaction with a message
+        if (_value > counter) {
+            revert("Value cannot exceed counter");
+        }
+
+        counter -= _value;
+    }
+
+    function getCounter() public view returns (uint256) {
+        return counter;
+    }
+}
